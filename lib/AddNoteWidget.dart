@@ -4,6 +4,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:notes/HomePage.dart';
+import 'package:notes/HomePageStatful.dart';
 import 'package:notes/model/dummy_data.dart';
 import 'package:notes/model/note.dart';
 import 'package:notes/Helpers/NoteFunctions.dart';
@@ -31,8 +33,11 @@ class AddNoteWidget extends StatelessWidget {
               decoration: BoxDecoration(
                   color: Colors.green, borderRadius: BorderRadius.circular(10)),
               child: FlatButton(
-                onPressed: () => NoteMethods.AddNote(titleController.text,
-                    textController.text, roleController.text),
+                onPressed: () {
+                  NoteMethods.AddNote(titleController.text, textController.text,
+                      roleController.text);
+                  HomePage();
+                },
                 child: Text(
                   "Add",
                   style: TextStyle(
