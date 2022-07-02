@@ -13,17 +13,21 @@ import 'package:notes/model/note.dart';
 
 class HomePage extends State<HomePageStateful> {
   List? HomePageNote;
+  List? HomePageRoles;
   final titleController = TextEditingController();
   final textController = TextEditingController();
   final roleController = TextEditingController();
+
   HomePage() {
-    HomePageNote = Notes;
+    Refresh();
   }
 
   void Refresh() {
-    setState(() {
-      HomePageNote = Notes;
-    });
+    HomePageNote = Notes;
+    if (Notes.length != 0)
+      HomePageRoles = Notes.map((e) => e.role).toList();
+    else
+      HomePageRoles?.add("other");
   }
 
   @override
@@ -58,8 +62,11 @@ class HomePage extends State<HomePageStateful> {
                               onPressed: () {
                                 NoteMethods.AddNote(titleController.text,
                                     textController.text, roleController.text);
+                                titleController.text = "";
+                                textController.text = "";
+                                roleController.text = "";
                                 setState(() {
-                                  HomePageNote = Notes;
+                                  Refresh();
                                 });
                               },
                               child: Text(
@@ -104,8 +111,6 @@ class HomePage extends State<HomePageStateful> {
                     ),
                     content: Expanded(
                       child: Container(
-                        // height: (MediaQuery.of(context).size.height / 4) + 13,
-                        // height: MediaQuery.of(context).size.height / 3 + 79,
                         child: Column(
                           children: [
                             Container(
@@ -139,9 +144,9 @@ class HomePage extends State<HomePageStateful> {
                             ),
                             Expanded(
                               child: Container(
-                                // margin: EdgeInsets.only(
-                                //     bottom: MediaQuery.of(context).size.height / 25),
-                                // height: MediaQuery.of(context).size.height / 3,
+                                margin: EdgeInsets.only(
+                                    bottom: MediaQuery.of(context).size.height /
+                                        25),
                                 decoration: BoxDecoration(
                                     color: Color.fromARGB(255, 234, 215, 209),
                                     borderRadius: BorderRadius.circular(10)),
@@ -154,25 +159,25 @@ class HomePage extends State<HomePageStateful> {
                                 ),
                               ),
                             ),
-
-                            // Container(
-                            //   decoration: BoxDecoration(
-                            //       color: Color.fromARGB(255, 234, 215, 209),
-                            //       borderRadius: BorderRadius.circular(10)),
-                            //   width: double.infinity,
-                            //   child: DropdownButton<String>(
-                            //     value: SeletedItem,
-                            //     items: items
-                            //         ?.map((item) => DropdownMenuItem<String>(
-                            //             value: item, child: Text(item ?? "others")))
-                            //         .toList(),
-                            //    onChanged: (String? newValue) {
-                            //     setState(() {
-                            //       SeletedItem = newValue!;
-                            //     });
-                            //   },
-                            //   ),
-                            // )
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: Color.fromARGB(255, 234, 215, 209),
+                                  borderRadius: BorderRadius.circular(10)),
+                              width: double.infinity,
+                              child: DropdownButton<String>(
+                                value: HomePageRoles?[0],
+                                items: HomePageRoles?.map((item) =>
+                                        DropdownMenuItem<String>(
+                                            value: item,
+                                            child: Text(item ?? "others")))
+                                    .toList(),
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    HomePageRoles?[0] = newValue!;
+                                  });
+                                },
+                              ),
+                            )
                           ],
                         ),
                       ),

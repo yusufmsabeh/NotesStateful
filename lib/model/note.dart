@@ -9,5 +9,8 @@ class Note {
     this.text = Notes['text'];
     this.role = Notes['role'];
   }
-  Note(this.title, this.text, this.role);
+  Note(this.title, this.text, this.role) {
+    if (this.role == "") this.role = "others";
+    if (this.title == "") this.title = "Unknown";
+  }
 }

@@ -23,6 +23,7 @@ class DrawerWidget extends StatelessWidget {
             child: Column(
               children: [
                 Container(
+                  padding: EdgeInsets.all(10),
                   child: Text(
                     "LABEL",
                     style: TextStyle(
