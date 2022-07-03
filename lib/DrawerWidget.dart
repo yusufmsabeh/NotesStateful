@@ -23,9 +23,9 @@ class DrawerWidget extends StatelessWidget {
             child: Column(
               children: [
                 Container(
-                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.only(bottom: 10),
                   child: Text(
-                    "LABEL",
+                    "LABELS",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 25,

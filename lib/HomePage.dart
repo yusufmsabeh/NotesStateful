@@ -1,3 +1,6 @@
+import 'dart:developer';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -24,10 +27,12 @@ class HomePage extends State<HomePageStateful> {
 
   void Refresh() {
     HomePageNote = Notes;
-    if (Notes.length != 0)
-      HomePageRoles = Notes.map((e) => e.role).toList();
-    else
-      HomePageRoles?.add("other");
+    if (Notes.length == 0) {
+      NoteMethods.AddNote("Unkown", "", "other");
+      log(("adding other to the list"));
+      print(Notes);
+    }
+    HomePageRoles = Notes.map((e) => e.role).toList();
   }
 
   @override
@@ -111,6 +116,7 @@ class HomePage extends State<HomePageStateful> {
                     ),
                     content: Expanded(
                       child: Container(
+                        width: double.infinity,
                         child: Column(
                           children: [
                             Container(
