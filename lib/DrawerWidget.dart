@@ -8,7 +8,7 @@ import 'package:notes/model/dummy_data.dart';
 class DrawerWidget extends StatelessWidget {
   List<String>? roles;
   DrawerWidget() {
-    this.roles = Notes.map((e) => e.role ?? "others").toList();
+    this.roles = Roles.map((e) => e).toList();
   }
   @override
   Widget build(BuildContext context) {

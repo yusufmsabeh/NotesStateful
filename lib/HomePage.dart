@@ -6,7 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:notes/AddNoteWidget.dart';
+import 'package:notes/AllNotes.dart';
 import 'package:notes/DrawerWidget.dart';
+
 import 'package:notes/Helpers/NoteFunctions.dart';
 import 'package:notes/NoteWidget.dart';
 import 'package:notes/HomePageStatful.dart';
@@ -14,27 +16,12 @@ import 'package:notes/model/dummy_data.dart';
 import 'package:notes/model/Note.dart';
 import 'package:notes/model/note.dart';
 
+import 'AllLabelsWidget.dart';
+
 class HomePage extends State<HomePageStateful> {
-  List? HomePageNote;
-  List? HomePageRoles;
-  final titleController = TextEditingController();
-  final textController = TextEditingController();
-  final roleController = TextEditingController();
-
-  HomePage() {
-    Refresh();
-  }
-
-  void Refresh() {
-    HomePageNote = Notes;
-    if (Notes.length == 0) {
-      NoteMethods.AddNote("Unkown", "", "other");
-      log(("adding other to the list"));
-      print(Notes);
-    }
-    HomePageRoles = Notes.map((e) => e.role).toList();
-  }
-
+  int currentIndex = 0;
+  Widget CurrentWidget = AllNotes();
+  String Title = "Notes";
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
@@ -43,177 +30,57 @@ class HomePage extends State<HomePageStateful> {
     ]);
     return Scaffold(
         drawer: DrawerWidget(),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Color.fromARGB(255, 31, 26, 56),
-          onPressed: () {
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    backgroundColor: Color.fromARGB(255, 31, 26, 56),
-                    actions: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width / 4,
-                            height: MediaQuery.of(context).size.height / 20,
-                            margin: EdgeInsets.all(
-                                MediaQuery.of(context).size.height / 40),
-                            decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: FlatButton(
-                              onPressed: () {
-                                NoteMethods.AddNote(titleController.text,
-                                    textController.text, roleController.text);
-                                titleController.text = "";
-                                textController.text = "";
-                                roleController.text = "";
-                                setState(() {
-                                  Refresh();
-                                });
-                              },
-                              child: Text(
-                                "Add",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.all(
-                                MediaQuery.of(context).size.height / 40),
-                            width: MediaQuery.of(context).size.width / 4,
-                            height: MediaQuery.of(context).size.height / 20,
-                            decoration: BoxDecoration(
-                                color: Colors.red,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: FlatButton(
-                              onPressed: null,
-                              child: Text(
-                                "Cancel",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        side: BorderSide(
-                            color: Color.fromARGB(255, 234, 215, 209))),
-                    title: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Add Note",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    content: Expanded(
-                      child: Container(
-                        width: double.infinity,
-                        child: Column(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(
-                                  bottom:
-                                      MediaQuery.of(context).size.height / 25),
-                              decoration: BoxDecoration(
-                                  color: Color.fromARGB(255, 234, 215, 209),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: TextField(
-                                controller: titleController,
-                                textAlign: TextAlign.center,
-                                decoration: InputDecoration(
-                                    hintText: "Title",
-                                    border: InputBorder.none),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                  bottom:
-                                      MediaQuery.of(context).size.height / 25),
-                              decoration: BoxDecoration(
-                                  color: Color.fromARGB(255, 234, 215, 209),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: TextField(
-                                controller: roleController,
-                                textAlign: TextAlign.center,
-                                decoration: InputDecoration(
-                                    hintText: "Role", border: InputBorder.none),
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                margin: EdgeInsets.only(
-                                    bottom: MediaQuery.of(context).size.height /
-                                        25),
-                                decoration: BoxDecoration(
-                                    color: Color.fromARGB(255, 234, 215, 209),
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: TextField(
-                                  controller: textController,
-                                  textAlign: TextAlign.center,
-                                  decoration: InputDecoration(
-                                      hintText: "Text",
-                                      border: InputBorder.none),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Color.fromARGB(255, 234, 215, 209),
-                                  borderRadius: BorderRadius.circular(10)),
-                              width: double.infinity,
-                              child: DropdownButton<String>(
-                                value: HomePageRoles?[0],
-                                items: HomePageRoles?.map((item) =>
-                                        DropdownMenuItem<String>(
-                                            value: item,
-                                            child: Text(item ?? "others")))
-                                    .toList(),
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    HomePageRoles?[0] = newValue!;
-                                  });
-                                },
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                });
+        bottomNavigationBar: BottomNavigationBar(
+            selectedItemColor: Color.fromARGB(255, 221, 153, 187),
+            currentIndex: currentIndex,
+            onTap: (i) {
+              currentIndex = i;
+              if (currentIndex == 0) {
+                CurrentWidget = AllNotes();
+                Title = "Notes";
+              } else {
+                CurrentWidget = AddNoteWidget();
 
-            // showDialog(context: context, builder: (context) => AddNoteWidget());
-          },
-          child: const SizedBox(
-            width: 50,
-            height: 50,
-            child: CircleAvatar(
-                backgroundColor: Color.fromARGB(255, 31, 26, 56),
-                child: Text(
-                  "+",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30,
-                      color: Colors.white),
-                )),
-          ),
-        ),
+                Title = "Add New Note";
+              }
+
+              setState(() {});
+            },
+            backgroundColor: Color.fromARGB(255, 31, 26, 56),
+            items: [
+              BottomNavigationBarItem(
+                  label: '',
+                  icon: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: SizedBox(
+                        width: 23,
+                        height: 23,
+                        child: Image.asset(currentIndex == 0
+                            ? "assets/sticky-notes_selected2.png"
+                            : 'assets/sticky-notes.png')),
+                  )),
+              BottomNavigationBarItem(
+                  label: '',
+                  icon: SizedBox(
+                      width: 23,
+                      height: 23,
+                      child: Image.asset(currentIndex == 1
+                          ? "assets/add_selected2.png"
+                          : 'assets/add.png'))),
+              // BottomNavigationBarItem(
+              //     label: '',
+              //     icon: Container(
+              //         width: 23,
+              //         height: 23,
+              //         child: Image.asset(currentIndex == 2
+              //             ? "assets/price-tag_selected2.png"
+              //             : 'assets/price-tag.png')))
+            ]),
         appBar: AppBar(
           backgroundColor: Color.fromARGB(255, 31, 26, 56),
-          title: Text("Notes"),
+          title: Text(Title),
           centerTitle: true,
         ),
-        body: ListView.builder(
-            itemCount: Notes.length,
-            itemBuilder: (context, index) => NoteWidget(Notes[index])));
+        body: CurrentWidget);
   }
 }

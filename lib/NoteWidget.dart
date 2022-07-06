@@ -5,9 +5,9 @@ import 'package:notes/model/note.dart';
 
 class NoteWidget extends StatelessWidget {
   @override
-  String? title;
+  late String title;
   String? text;
-  String? role;
+  late String role;
 
   NoteWidget(Note note) {
     this.title = note.title;
@@ -29,7 +29,7 @@ class NoteWidget extends StatelessWidget {
             Align(
               alignment: Alignment.topCenter,
               child: Text(
-                title ?? "No Text Found",
+                title,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
@@ -44,7 +44,7 @@ class NoteWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10)),
                 padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                 child: Text(
-                  role ?? "default",
+                  role,
                   style: TextStyle(
                       color: Colors.white, fontWeight: FontWeight.bold),
                 ),

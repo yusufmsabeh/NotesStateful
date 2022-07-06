@@ -145,3 +145,4 @@
 import 'package:notes/model/note.dart';
 
 List<Note> Notes = [];
+List<String> Roles = [];

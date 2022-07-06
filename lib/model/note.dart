@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 class Note {
-  String? title;
+  late String title;
   String? text;
-  String? role;
+  late String role;
   Note.fromJson(Map Notes) {
     this.title = Notes['title'];
     this.text = Notes['text'];
     this.role = Notes['role'];
   }
   Note(this.title, this.text, this.role) {
-    if (this.role == "") this.role = "others";
     if (this.title == "") this.title = "Unknown";
+    if (this.role == '') this.role = "other";
   }
 }
