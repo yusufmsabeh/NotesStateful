@@ -205,13 +205,20 @@ class _AddNoteWidgetState extends State<AddNoteWidget> {
                                               actions: [
                                                 TextButton(
                                                     onPressed: () {
-                                                      Roles.add(
-                                                          roleController.text);
+                                                      if (!Roles.contains(
+                                                          roleController
+                                                              .text)) {
+                                                        Roles.add(roleController
+                                                            .text);
+                                                        selectedItem =
+                                                            Roles.last;
+                                                      }
 
                                                       roleController.text = '';
-                                                      selectedItem = Roles.last;
+
                                                       Navigator.of(context)
                                                           .pop();
+
                                                       setState(() {});
                                                     },
                                                     child: Container(
