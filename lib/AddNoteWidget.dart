@@ -264,8 +264,12 @@ class _AddNoteWidgetState extends State<AddNoteWidget> {
               decoration: BoxDecoration(
                   color: Colors.green, borderRadius: BorderRadius.circular(5)),
               child: ElevatedButton(
-                onPressed: () => NoteMethods.AddNote(titleController.text,
-                    textController.text, selectedItem ?? ''),
+                onPressed: () {
+                  NoteMethods.AddNote(titleController.text, textController.text,
+                      selectedItem ?? '');
+                  titleController.text = '';
+                  textController.text = '';
+                },
                 child: Text(
                   "ADD",
                   style: TextStyle(
