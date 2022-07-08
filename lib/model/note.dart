@@ -12,6 +12,22 @@ class Note {
     this.text = Notes['text'];
     this.role = Notes['role'];
   }
+
+  Note.db(this.id, this.title, this.role, this.text);
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': this.id,
+      'title': this.title,
+      'role': this.role,
+      'text': this.text
+    };
+  }
+
+  Note copy({required id}) {
+    return Note.db(id, this.title, this.text ?? '', this.role);
+  }
+
   Note(this.title, this.text, this.role) {
     this.id = idDummy + 1;
 
