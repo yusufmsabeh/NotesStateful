@@ -3,13 +3,25 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:notes/AllNotes.dart';
 import 'package:notes/model/dummy_data.dart';
 
-class DrawerWidget extends StatelessWidget {
-  List<String>? roles;
+class DrawerWidget extends StatefulWidget {
+  late List<String> roles;
+
   DrawerWidget() {
     this.roles = Roles.map((e) => e).toList();
   }
+
+  @override
+  State<DrawerWidget> createState() => _DrawerWidgetState();
+}
+
+class _DrawerWidgetState extends State<DrawerWidget> {
+  void Refresh() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -35,7 +47,7 @@ class DrawerWidget extends StatelessWidget {
                 Expanded(
                   child: Container(
                     child: ListView.builder(
-                        itemCount: roles?.length,
+                        itemCount: widget.roles.length,
                         itemBuilder: (context, index) => ListTile(
                               title: Container(
                                 padding: EdgeInsets.only(bottom: 10),
@@ -43,12 +55,34 @@ class DrawerWidget extends StatelessWidget {
                                     border: Border(
                                         bottom: BorderSide(
                                             color: Colors.white, width: 1))),
-                                child: Text(
-                                  roles?[index] ?? "other",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                      color: Colors.white),
+                                child: TextButton(
+                                  onPressed: () {
+                                    print((widget.roles[index]));
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Scaffold(
+                                                appBar: AppBar(
+                                                    backgroundColor:
+                                                        Color.fromARGB(
+                                                            255, 31, 26, 56),
+                                                    centerTitle: true,
+                                                    title: Text("Note")),
+                                                body: AllNotes(
+                                                    notes: Notes.where(
+                                                            (element) =>
+                                                                element.role ==
+                                                                widget.roles[
+                                                                    index])
+                                                        .toList()))));
+                                  },
+                                  child: Text(
+                                    widget.roles[index],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                        color: Colors.white),
+                                  ),
                                 ),
                               ),
                             )),

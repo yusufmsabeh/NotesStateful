@@ -20,8 +20,17 @@ import 'AllLabelsWidget.dart';
 
 class HomePage extends State<HomePageStateful> {
   int currentIndex = 0;
-  Widget CurrentWidget = AllNotes();
+  late Widget CurrentWidget = AllNotes(
+    notes: Notes,
+  );
+
   String Title = "Notes";
+
+  void Refresh() {
+    print("refresh in the homepage screen");
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
@@ -36,7 +45,9 @@ class HomePage extends State<HomePageStateful> {
             onTap: (i) {
               currentIndex = i;
               if (currentIndex == 0) {
-                CurrentWidget = AllNotes();
+                CurrentWidget = AllNotes(
+                  notes: Notes,
+                );
                 Title = "Notes";
               } else {
                 CurrentWidget = AddNoteWidget();

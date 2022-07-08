@@ -4,25 +4,37 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:notes/NoteContent.dart';
 import 'package:notes/model/note.dart';
 
-class NoteWidget extends StatelessWidget {
+class NoteWidget extends StatefulWidget {
   @override
   late String title;
   String? text;
   late String role;
   late Note NoteWid;
-  NoteWidget(Note note) {
+  Function function;
+  NoteWidget(Note note, this.function) {
     this.title = note.title;
     this.text = note.text;
     this.role = note.role;
     this.NoteWid = note;
   }
+
+  @override
+  State<NoteWidget> createState() => _NoteWidgetState();
+}
+
+class _NoteWidgetState extends State<NoteWidget> {
+  void Refresh() {
+    setState(() {});
+  }
+
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => NoteContentWidget(NoteWid)));
+                builder: (context) =>
+                    NoteContentWidget(widget.NoteWid, widget.function)));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -38,7 +50,7 @@ class NoteWidget extends StatelessWidget {
               Align(
                 alignment: Alignment.topCenter,
                 child: Text(
-                  title,
+                  widget.title,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -53,7 +65,7 @@ class NoteWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10)),
                   padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                   child: Text(
-                    role,
+                    widget.role,
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),
                   ),
@@ -66,7 +78,7 @@ class NoteWidget extends StatelessWidget {
             thickness: 1,
           ),
           Expanded(
-            child: Text(overflow: TextOverflow.fade, text ?? ""),
+            child: Text(overflow: TextOverflow.fade, widget.text ?? ""),
           )
         ]),
       ),
