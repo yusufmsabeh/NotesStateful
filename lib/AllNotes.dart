@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:lottie/lottie.dart';
 
 import 'NoteWidget.dart';
 import 'model/note.dart';
@@ -23,6 +24,13 @@ class _AllNotesState extends State<AllNotes> {
 
   @override
   Widget build(BuildContext context) {
+    if (Notes.isEmpty) {
+      return Center(
+          child: Container(
+              width: MediaQuery.of(context).size.width - 40,
+              height: MediaQuery.of(context).size.height - 40,
+              child: Lottie.asset('assets/animation/empty.json')));
+    }
     return ListView.builder(
         itemCount: widget.notes.length,
         itemBuilder: (context, index) =>
