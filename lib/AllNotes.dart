@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:lottie/lottie.dart';
+import 'package:notes/DB/DBConaction.dart';
 
 import 'NoteWidget.dart';
 import 'model/note.dart';
@@ -18,13 +19,13 @@ class AllNotes extends StatefulWidget {
 
 class _AllNotesState extends State<AllNotes> {
   void Refresh() {
-    print("Refresh in the allnotes screen");
     setState(() {});
   }
 
   @override
+  @override
   Widget build(BuildContext context) {
-    if (Notes.isEmpty) {
+    if (widget.notes.isEmpty) {
       return Center(
           child: Container(
               width: MediaQuery.of(context).size.width - 40,

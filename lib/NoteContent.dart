@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:notes/DB/DBConaction.dart';
 import 'package:notes/EditWidget.dart';
 import 'package:notes/model/dummy_data.dart';
 
@@ -38,7 +39,9 @@ class _NoteContentWidgetState extends State<NoteContentWidget> {
                       child: Text(
                         widget.note.title,
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
+                            color: Color.fromARGB(255, 31, 26, 56),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20),
                       ),
                     ),
                     Align(
@@ -48,7 +51,8 @@ class _NoteContentWidgetState extends State<NoteContentWidget> {
                         children: [
                           InkWell(
                             onTap: () {
-                              Notes.remove(widget.note);
+                              connection.instance.delete(widget.note.id ?? 0);
+
                               widget.function();
                               Navigator.pop(context);
                             },

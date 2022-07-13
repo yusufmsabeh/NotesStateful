@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:notes/DB/DBConaction.dart';
 import 'package:notes/model/dummy_data.dart';
 
 import 'model/note.dart';
@@ -91,10 +92,10 @@ class _EditWidgetState extends State<EditWidget> {
                 color: Colors.green, borderRadius: BorderRadius.circular(5)),
             child: ElevatedButton(
               onPressed: () {
-                int index = Notes.indexOf(widget.note);
+                // int index = Notes.indexOf(widget.note);
                 widget.note.text = widget.textController.text;
-                Notes[index] = widget.note;
-
+                // Notes[index] = widget.note;
+                connection.instance.update(widget.note);
                 widget.function();
                 Navigator.pop(context);
               },

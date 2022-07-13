@@ -4,20 +4,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:notes/AllNotes.dart';
+import 'package:notes/DB/DBConaction.dart';
+import 'package:notes/model/Role.dart';
 import 'package:notes/model/dummy_data.dart';
+import 'package:notes/model/note.dart';
 
 class DrawerWidget extends StatefulWidget {
-  late List<String> roles;
-
-  DrawerWidget() {
-    this.roles = Roles.map((e) => e).toList();
-  }
-
   @override
   State<DrawerWidget> createState() => _DrawerWidgetState();
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
+  List<Role> roles = [];
+  List<Note> notesForSpecificRole = [];
+  @override
+  void initState() {
+    super.initState();
+    readAllRoles();
+  }
+
+  void readByRole(String role) async {
+    notesForSpecificRole = await connection.instance.readAllNoteByRole(role);
+
+    setState(() {});
+  }
+
+  void readAllRoles() async {
+    roles = await connection.instance.readAllRoles();
+    setState(() {});
+  }
+
   void Refresh() {
     setState(() {});
   }
@@ -47,7 +63,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 Expanded(
                   child: Container(
                     child: ListView.builder(
-                        itemCount: widget.roles.length,
+                        itemCount: roles.length,
                         itemBuilder: (context, index) => ListTile(
                               title: Container(
                                 padding: EdgeInsets.only(bottom: 10),
@@ -57,7 +73,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                                             color: Colors.white, width: 1))),
                                 child: TextButton(
                                   onPressed: () {
-                                    print((widget.roles[index]));
+                                    readByRole(roles[index].RoleName);
+
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -69,15 +86,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                                                     centerTitle: true,
                                                     title: Text("Note")),
                                                 body: AllNotes(
-                                                    notes: Notes.where(
-                                                            (element) =>
-                                                                element.role ==
-                                                                widget.roles[
-                                                                    index])
-                                                        .toList()))));
+                                                    notes:
+                                                        notesForSpecificRole))));
                                   },
                                   child: Text(
-                                    widget.roles[index],
+                                    roles[index].RoleName,
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,

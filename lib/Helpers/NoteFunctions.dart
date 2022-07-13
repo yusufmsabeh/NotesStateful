@@ -1,11 +1,11 @@
-import 'dart:developer';
+// import 'dart:developer';
 
-import 'package:notes/model/dummy_data.dart';
+// import 'package:notes/model/dummy_data.dart';
 
-import '../model/note.dart';
+// import '../model/note.dart';
 
-class NoteMethods {
-  static void AddNote(String title, String text, String role) {
-    Notes.add(Note(title, text, role));
-  }
-}
+// class NoteMethods {
+//   static void AddNote(String title, String text, String role) {
+//     Notes.add(Note(title, text, role));
+//   }
+// }

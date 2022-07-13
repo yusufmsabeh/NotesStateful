@@ -13,23 +13,36 @@ import 'package:notes/Helpers/NoteFunctions.dart';
 import 'package:notes/NoteWidget.dart';
 import 'package:notes/HomePageStatful.dart';
 import 'package:notes/model/dummy_data.dart';
-import 'package:notes/model/Note.dart';
 import 'package:notes/model/note.dart';
-
-import 'AllLabelsWidget.dart';
+import 'package:notes/DB/DBConaction.dart';
 
 class HomePage extends State<HomePageStateful> {
   int currentIndex = 0;
   late Widget CurrentWidget = AllNotes(
-    notes: Notes,
+    notes: notes,
   );
-
   String Title = "Notes";
+  List<Note> notes = [];
 
-  void Refresh() {
-    print("refresh in the homepage screen");
+  void readall() async {
+    this.notes = await connection.instance.readallNotes();
+    CurrentWidget = AllNotes(
+      notes: notes,
+    );
+
     setState(() {});
   }
+
+  @override
+  void initState() {
+    super.initState();
+    readall();
+  }
+
+  @override
+  // void Refresh() {
+  //   setState(() {});
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +51,15 @@ class HomePage extends State<HomePageStateful> {
       DeviceOrientation.portraitDown,
     ]);
     return Scaffold(
+        floatingActionButton: currentIndex == 0
+            ? FloatingActionButton(
+                onPressed: () {
+                  readall();
+                },
+                child: Icon(Icons.refresh),
+                backgroundColor: Color.fromARGB(255, 31, 26, 56),
+              )
+            : null,
         drawer: DrawerWidget(),
         bottomNavigationBar: BottomNavigationBar(
             selectedItemColor: Color.fromARGB(255, 221, 153, 187),
@@ -45,8 +67,10 @@ class HomePage extends State<HomePageStateful> {
             onTap: (i) {
               currentIndex = i;
               if (currentIndex == 0) {
+                readall();
+
                 CurrentWidget = AllNotes(
-                  notes: Notes,
+                  notes: notes,
                 );
                 Title = "Notes";
               } else {

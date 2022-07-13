@@ -5,8 +5,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:notes/DB/DBConaction.dart';
 import 'package:notes/HomePage.dart';
 import 'package:notes/HomePageStatful.dart';
+import 'package:notes/model/Role.dart';
 import 'package:notes/model/dummy_data.dart';
 import 'package:notes/model/note.dart';
 import 'package:notes/Helpers/NoteFunctions.dart';
@@ -25,6 +27,20 @@ class _AddNoteWidgetState extends State<AddNoteWidget> {
   final roleController = TextEditingController();
 
   String? selectedItem;
+
+  List<Role> roles = [];
+
+  void readRole() async {
+    roles = await connection.instance.readAllRoles();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    readRole();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -123,12 +139,14 @@ class _AddNoteWidgetState extends State<AddNoteWidget> {
 
                           // Array list of items
                           items: [
-                            ...Roles.map((String items) {
-                              return DropdownMenuItem(
-                                value: items,
-                                child: Text(items),
-                              );
-                            }).toList(),
+                            ...roles.map(
+                              (e) {
+                                return DropdownMenuItem(
+                                  child: Text(e.RoleName),
+                                  value: e.RoleName,
+                                );
+                              },
+                            ),
                             DropdownMenuItem(
                                 child: TextButton(
                                     onPressed: () {
@@ -205,21 +223,27 @@ class _AddNoteWidgetState extends State<AddNoteWidget> {
                                               actions: [
                                                 TextButton(
                                                     onPressed: () {
-                                                      if (!Roles.contains(
-                                                          roleController
-                                                              .text)) {
-                                                        Roles.add(roleController
-                                                            .text);
+                                                      bool isFound = false;
+                                                      roles.forEach((element) {
+                                                        if (element.RoleName ==
+                                                            roleController.text)
+                                                          isFound = true;
+                                                      });
+
+                                                      if (!isFound) {
+                                                        connection.instance
+                                                            .InsertRole(Role(
+                                                                RoleName:
+                                                                    roleController
+                                                                        .text));
                                                         selectedItem =
-                                                            Roles.last;
+                                                            roles.last.RoleName;
                                                       }
-
                                                       roleController.text = '';
-
-                                                      Navigator.of(context)
-                                                          .pop();
-
-                                                      setState(() {});
+                                                      setState(() {
+                                                        readRole();
+                                                      });
+                                                      Navigator.pop(context);
                                                     },
                                                     child: Container(
                                                         width: double.infinity,
@@ -272,10 +296,18 @@ class _AddNoteWidgetState extends State<AddNoteWidget> {
                   color: Colors.green, borderRadius: BorderRadius.circular(5)),
               child: ElevatedButton(
                 onPressed: () {
-                  NoteMethods.AddNote(titleController.text, textController.text,
-                      selectedItem ?? '');
+                  Note note = Note(
+                      title: titleController.text == ''
+                          ? 'Unknown'
+                          : titleController.text,
+                      text: textController.text,
+                      role: selectedItem ?? 'other');
+
+                  connection.instance.create(note);
+
                   titleController.text = '';
                   textController.text = '';
+                  setState(() {});
                 },
                 child: Text(
                   "ADD",
