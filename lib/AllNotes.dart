@@ -11,7 +11,10 @@ import 'model/dummy_data.dart';
 class AllNotes extends StatefulWidget {
   late List<Note> notes;
 
-  AllNotes({Key? key, required this.notes}) : super(key: key);
+  AllNotes({
+    Key? key,
+    required this.notes,
+  }) : super(key: key);
 
   @override
   State<AllNotes> createState() => _AllNotesState();
