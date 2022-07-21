@@ -40,7 +40,9 @@ class _EditWidgetState extends State<EditWidget> {
             child: Stack(
               children: [
                 Align(
-                  alignment: Alignment.topLeft,
+                  alignment: context.locale.toString() == 'en'
+                      ? Alignment.topLeft
+                      : Alignment.topRight,
                   child: Text(
                     widget.note.title,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
