@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -53,7 +54,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 Container(
                   margin: EdgeInsets.only(bottom: 10),
                   child: Text(
-                    "LABELS",
+                    "Labels".tr(),
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 25,

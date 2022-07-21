@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -27,7 +28,7 @@ class _EditWidgetState extends State<EditWidget> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 31, 26, 56),
-        title: Text("Edit Note"),
+        title: Text("pageNameEditNote".tr()),
         centerTitle: true,
       ),
       body: Container(
@@ -100,7 +101,7 @@ class _EditWidgetState extends State<EditWidget> {
                 Navigator.pop(context);
               },
               child: Text(
-                "Edit",
+                "ButtonEdit".tr(),
                 style:
                     TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),

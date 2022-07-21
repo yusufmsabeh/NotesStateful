@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -24,7 +25,7 @@ class _NoteContentWidgetState extends State<NoteContentWidget> {
         appBar: AppBar(
             backgroundColor: Color.fromARGB(255, 31, 26, 56),
             centerTitle: true,
-            title: Text("Note")),
+            title: Text("pageNameNote".tr())),
         body: Center(
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: 10),
@@ -35,7 +36,9 @@ class _NoteContentWidgetState extends State<NoteContentWidget> {
                 child: Stack(
                   children: [
                     Align(
-                      alignment: Alignment.topLeft,
+                      alignment: context.locale.toString() == 'en'
+                          ? Alignment.topLeft
+                          : Alignment.topRight,
                       child: Text(
                         widget.note.title,
                         style: TextStyle(

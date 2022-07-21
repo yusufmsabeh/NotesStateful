@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:ui';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -21,7 +22,7 @@ class HomePage extends State<HomePageStateful> {
   late Widget CurrentWidget = AllNotes(
     notes: notes,
   );
-  String Title = "Notes";
+  String Title = "pageNameNotes".tr();
   List<Note> notes = [];
 
   void readall() async {
@@ -31,6 +32,12 @@ class HomePage extends State<HomePageStateful> {
     );
 
     setState(() {});
+  }
+
+  void Changetitle() {
+    currentIndex == 0
+        ? Title = "pageNameNotes".tr()
+        : Title = "pageNameAddNote".tr();
   }
 
   @override
@@ -72,11 +79,11 @@ class HomePage extends State<HomePageStateful> {
                 CurrentWidget = AllNotes(
                   notes: notes,
                 );
-                Title = "Notes";
+                Title = "pageNameNotes".tr();
               } else {
                 CurrentWidget = AddNoteWidget();
 
-                Title = "Add New Note";
+                Title = "pageNameAddNote".tr();
               }
 
               setState(() {});
@@ -112,6 +119,19 @@ class HomePage extends State<HomePageStateful> {
               //             : 'assets/price-tag.png')))
             ]),
         appBar: AppBar(
+          actions: [
+            IconButton(
+              icon: Icon(Icons.language),
+              onPressed: () {
+                setState(() {
+                  context.locale.toString() == 'ar'
+                      ? context.setLocale(Locale('en'))
+                      : context.setLocale(Locale('ar'));
+                  Changetitle();
+                });
+              },
+            ),
+          ],
           backgroundColor: Color.fromARGB(255, 31, 26, 56),
           title: Text(Title),
           centerTitle: true,

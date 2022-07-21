@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'dart:math';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -53,7 +54,7 @@ class _AddNoteWidgetState extends State<AddNoteWidget> {
               child: Row(
                 children: [
                   Text(
-                    "Title",
+                    "TextFieldTitle".tr(),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -82,7 +83,7 @@ class _AddNoteWidgetState extends State<AddNoteWidget> {
               child: Row(
                 children: [
                   Text(
-                    "Text",
+                    "TextFieldText".tr(),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -113,7 +114,7 @@ class _AddNoteWidgetState extends State<AddNoteWidget> {
               child: Row(
                 children: [
                   Text(
-                    "Label",
+                    "TextFieldLabel".tr(),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -158,7 +159,8 @@ class _AddNoteWidgetState extends State<AddNoteWidget> {
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           10)),
-                                              title: Text("Add New Label"),
+                                              title:
+                                                  Text("pageNameAddLabel".tr()),
                                               content: SizedBox(
                                                 height: MediaQuery.of(context)
                                                         .size
@@ -168,7 +170,7 @@ class _AddNoteWidgetState extends State<AddNoteWidget> {
                                                   Row(
                                                     children: [
                                                       Text(
-                                                        "Label",
+                                                        "TextFieldLabel".tr(),
                                                         style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold,
@@ -260,7 +262,7 @@ class _AddNoteWidgetState extends State<AddNoteWidget> {
                                                                         5)),
                                                         child: Center(
                                                           child: Text(
-                                                            "Add",
+                                                            "ButtonAdd".tr(),
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .white,
@@ -273,7 +275,7 @@ class _AddNoteWidgetState extends State<AddNoteWidget> {
                                             );
                                           });
                                     },
-                                    child: Text("+ Add New Label")))
+                                    child: Text("ButtonAddLabel".tr())))
                           ],
                           // After selecting the desired option,it will
                           // change button value to selected value
@@ -310,7 +312,7 @@ class _AddNoteWidgetState extends State<AddNoteWidget> {
                   setState(() {});
                 },
                 child: Text(
-                  "ADD",
+                  "ButtonAdd".tr(),
                   style: TextStyle(
                       color: Colors.white, fontWeight: FontWeight.bold),
                 ),
