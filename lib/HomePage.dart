@@ -12,130 +12,70 @@ import 'package:notes/DrawerWidget.dart';
 
 import 'package:notes/Helpers/NoteFunctions.dart';
 import 'package:notes/NoteWidget.dart';
-import 'package:notes/HomePageStatful.dart';
+
 import 'package:notes/model/dummy_data.dart';
 import 'package:notes/model/note.dart';
 import 'package:notes/DB/DBConaction.dart';
+import 'package:notes/providers/DBprovider.dart';
+import 'package:provider/provider.dart';
 
-class HomePage extends State<HomePageStateful> {
-  int currentIndex = 0;
-  late Widget CurrentWidget = AllNotes(
-    notes: notes,
-  );
-  String Title = "pageNameNotes".tr();
-  List<Note> notes = [];
-
-  void readall() async {
-    this.notes = await connection.instance.readallNotes();
-    CurrentWidget = AllNotes(
-      notes: notes,
-    );
-
-    setState(() {});
-  }
-
-  void Changetitle() {
-    currentIndex == 0
-        ? Title = "pageNameNotes".tr()
-        : Title = "pageNameAddNote".tr();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    readall();
-  }
-
-  @override
-  // void Refresh() {
-  //   setState(() {});
-  // }
-
+class HomePageStateful extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    return Scaffold(
-        floatingActionButton: currentIndex == 0
-            ? FloatingActionButton(
-                onPressed: () {
-                  readall();
-                },
-                child: Icon(Icons.refresh),
-                backgroundColor: Color.fromARGB(255, 31, 26, 56),
-              )
-            : null,
-        drawer: DrawerWidget(),
-        bottomNavigationBar: BottomNavigationBar(
-            selectedItemColor: Color.fromARGB(255, 221, 153, 187),
-            currentIndex: currentIndex,
-            onTap: (i) {
-              currentIndex = i;
-              if (currentIndex == 0) {
-                readall();
-
-                CurrentWidget = AllNotes(
-                  notes: notes,
-                );
-                Title = "pageNameNotes".tr();
-              } else {
-                CurrentWidget = AddNoteWidget();
-
-                Title = "pageNameAddNote".tr();
-              }
-
-              setState(() {});
-            },
-            backgroundColor: Color.fromARGB(255, 31, 26, 56),
-            items: [
-              BottomNavigationBarItem(
-                  label: '',
-                  icon: Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: SizedBox(
+    return Consumer<DBprovider>(builder: (context, provider, x) {
+      return Scaffold(
+          drawer: DrawerWidget(),
+          bottomNavigationBar: BottomNavigationBar(
+              selectedItemColor: Color.fromARGB(255, 221, 153, 187),
+              currentIndex: provider.currentIndex,
+              onTap: (i) {
+                provider.changeCurrentIndex(i);
+              },
+              backgroundColor: Color.fromARGB(255, 31, 26, 56),
+              items: [
+                BottomNavigationBarItem(
+                    label: '',
+                    icon: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: SizedBox(
+                          width: 23,
+                          height: 23,
+                          child: Image.asset(provider.currentIndex == 0
+                              ? "assets/sticky-notes_selected2.png"
+                              : 'assets/sticky-notes.png')),
+                    )),
+                BottomNavigationBarItem(
+                    label: '',
+                    icon: SizedBox(
                         width: 23,
                         height: 23,
-                        child: Image.asset(currentIndex == 0
-                            ? "assets/sticky-notes_selected2.png"
-                            : 'assets/sticky-notes.png')),
-                  )),
-              BottomNavigationBarItem(
-                  label: '',
-                  icon: SizedBox(
-                      width: 23,
-                      height: 23,
-                      child: Image.asset(currentIndex == 1
-                          ? "assets/add_selected2.png"
-                          : 'assets/add.png'))),
-              // BottomNavigationBarItem(
-              //     label: '',
-              //     icon: Container(
-              //         width: 23,
-              //         height: 23,
-              //         child: Image.asset(currentIndex == 2
-              //             ? "assets/price-tag_selected2.png"
-              //             : 'assets/price-tag.png')))
-            ]),
-        appBar: AppBar(
-          actions: [
-            IconButton(
-              icon: Icon(Icons.language),
-              onPressed: () {
-                setState(() {
-                  context.locale.toString() == 'ar'
-                      ? context.setLocale(Locale('en'))
-                      : context.setLocale(Locale('ar'));
-                  Changetitle();
-                });
-              },
-            ),
-          ],
-          backgroundColor: Color.fromARGB(255, 31, 26, 56),
-          title: Text(Title),
-          centerTitle: true,
-        ),
-        body: CurrentWidget);
+                        child: Image.asset(provider.currentIndex == 1
+                            ? "assets/add_selected2.png"
+                            : 'assets/add.png'))),
+              ]),
+          appBar: AppBar(
+            actions: [
+              IconButton(
+                icon: Icon(Icons.language),
+                onPressed: () {
+                  log(context.locale.toString());
+                  context.locale.toString() == 'en'
+                      ? context.setLocale(Locale('ar'))
+                      : context.setLocale(Locale('en'));
+                  provider.Changetitle();
+                  log(context.locale.toString());
+                },
+              ),
+            ],
+            backgroundColor: Color.fromARGB(255, 31, 26, 56),
+            title: Text("pageNameNotes".tr()),
+            centerTitle: true,
+          ),
+          body: provider.currentWidget);
+    });
   }
 }

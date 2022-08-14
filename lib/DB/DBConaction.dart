@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:notes/model/Role.dart';
@@ -60,7 +61,7 @@ class connection {
     return roles;
   }
 
-  void InsertRole(Role role) async {
+  InsertRole(Role role) async {
     final db = await instance.database;
     await db.insert(tabelRole, role.toJson());
   }
@@ -88,7 +89,7 @@ class connection {
     List<Note> notes = [];
 
     maps.forEach((e) => notes.add(Note.fromJson(e)));
-
+    log(notes.toString());
     return notes;
   }
 
